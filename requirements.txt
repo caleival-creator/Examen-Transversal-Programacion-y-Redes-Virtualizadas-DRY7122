@@ -1,1 +1,6 @@
 requests
+tabulate
+ncclient
+pyang
+netmiko
+xmltodict

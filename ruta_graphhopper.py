@@ -2,7 +2,7 @@ import requests
 import urllib.parse
 import os
 
-# Cumple: Manejo seguro de API Key mediante archivo .env
+# 1. Manejo seguro de API Key
 def leer_api_key():
     try:
         with open(".env", "r") as f:
@@ -14,9 +14,9 @@ def leer_api_key():
 
 API_KEY = leer_api_key()
 
-# Cumple: Control de errores básicos (API Key ausente)
-if not API_KEY or API_KEY == "tu_clave_falsa_de_ejemplo_aqui":
-    print("Error Crítico: No se encontró una API Key válida. Configure el archivo .env")
+# 2. Control de error: API Key ausente
+if not API_KEY or API_KEY == "tu_clave_de_ejemplo_aqui" or API_KEY == "PEGA_AQUI_TU_CLAVE_REAL":
+    print(" [!] Error Crítico: No se encontró una API Key válida. Configure el archivo .env")
     exit()
 
 GEOCODING_API = "https://graphhopper.com/api/1/geocode"
@@ -30,62 +30,79 @@ def obtener_coordenadas(ciudad):
             data = res.json()
             if data.get("hits"):
                 return data["hits"][0]["lat"], data["hits"][0]["lng"]
-    except requests.exceptions.RequestException:
-        print("Error de conexión con la API de Geocoding.")
+            else:
+                # 3. Control de error: Ciudad inválida
+                print(f" [!] Error: La ciudad '{ciudad}' no existe o no pudo ser localizada.")
+        else:
+            # 4. Control de error: HTTP Geocoding
+            print(f" [!] Error HTTP {res.status_code} en Geocoding: {res.text}")
+    except requests.exceptions.RequestException as e:
+        print(f" [!] Error de conexión: {e}")
     return None, None
 
 while True:
-    print("\n" + "="*50)
-    print("   CALCULADORA DE RUTAS INTERNACIONALES   ")
-    print("="*50)
+    print("\n" + "="*60)
+    print("       CALCULADORA DE RUTAS INTERNACIONALES       ")
+    print("="*60)
     
-    origen = input("Ingrese Ciudad de Origen (o presione 's' para salir): ")
+    # Requerimiento: Solicitar en español y salir con 's'
+    origen = input("Ingrese 'Ciudad de Origen' (o presione 's' para salir): ")
     if origen.lower() == 's':
+        print("Saliendo de la aplicación...")
         break
         
-    destino = input("Ingrese Ciudad de Destino (o presione 's' para salir): ")
+    destino = input("Ingrese 'Ciudad de Destino' (o presione 's' para salir): ")
     if destino.lower() == 's':
+        print("Saliendo de la aplicación...")
         break
 
-    vehiculo = input("Elija transporte (car/bike/foot): ").lower()
+    # Requerimiento: Elegir medio de transporte
+    print("\nMedios de transporte: car (Auto), bike (Bicicleta), foot (A pie)")
+    vehiculo = input("Elija tipo de medio de transporte a utilizar: ").lower()
     if vehiculo not in ['car', 'bike', 'foot']:
+        print("Opción no válida. Se utilizará 'car' por defecto.")
         vehiculo = 'car'
 
-    print("\nObteniendo coordenadas...")
+    print("\nCalculando ruta, por favor espere...")
     lat_origen, lng_origen = obtener_coordenadas(origen)
     lat_destino, lng_destino = obtener_coordenadas(destino)
 
-    # Cumple: Control de errores básicos (Origen/Destino inválido)
     if not lat_origen or not lat_destino:
-        print("Error: Una de las ciudades ingresadas no es válida o no existe. Intente nuevamente.")
+        print(" [!] Error: No se puede calcular la ruta debido a parámetros inválidos.")
         continue
 
+    # Requerimiento: locale=es asegura la narrativa en español
     url_ruta = f"{ROUTING_API}?point={lat_origen},{lng_origen}&point={lat_destino},{lng_destino}&profile={vehiculo}&locale=es&key={API_KEY}"
     
     try:
         res_ruta = requests.get(url_ruta)
-        # Cumple: Control de errores HTTP
         if res_ruta.status_code == 200:
             ruta = res_ruta.json()["paths"][0]
+            
+            # Cálculos de distancia y tiempo
             dist_km = ruta["distance"] / 1000
             dist_mi = dist_km * 0.621371
             segundos = ruta["time"] / 1000
             horas = int(segundos // 3600)
             minutos = int((segundos % 3600) // 60)
             
-            print("\n" + "*"*50)
+            print("\n" + "*"*60)
             print(f" RUTA: {origen.upper()} -> {destino.upper()} ({vehiculo.upper()})")
-            # Cumple: Mostrar coordenadas en pantalla
-            print(f" [!] Coordenadas Origen : Lat {lat_origen}, Lng {lng_origen}")
-            print(f" [!] Coordenadas Destino: Lat {lat_destino}, Lng {lng_destino}")
-            print("*"*50)
-            print(f"- Distancia: {dist_km:.2f} km / {dist_mi:.2f} millas")
-            print(f"- Duración : {horas} horas y {minutos} minutos")
-            print("\n--- NARRATIVA ---")
+            # Requerimiento: Mostrar coordenadas
+            print(f" -> Coordenadas Origen : Latitud {lat_origen}, Longitud {lng_origen}")
+            print(f" -> Coordenadas Destino: Latitud {lat_destino}, Longitud {lng_destino}")
+            print("*"*60)
+            # Requerimiento: Mostrar duración, millas y kilómetros
+            print(f"- Distancia de viaje : {dist_km:.2f} Kilómetros / {dist_mi:.2f} Millas")
+            print(f"- Duración del viaje : {horas} horas y {minutos} minutos")
+            
+            # Requerimiento: Mostrar la narrativa
+            print("\n--- NARRATIVA DEL VIAJE ---")
             for paso in ruta["instructions"]:
                 print(f"> {paso['text']} ({paso['distance']/1000:.2f} km)")
-            print("*"*50 + "\n")
+            print("*"*60 + "\n")
         else:
-            print(f"Error en la API de Rutas (HTTP {res_ruta.status_code}). Respuesta vacía o ruta imposible.")
+            # 5. Control de error: HTTP Routing / Respuesta vacía
+            print(f" [!] Error HTTP {res_ruta.status_code} al trazar la ruta. Es posible que no exista conexión terrestre para el vehículo seleccionado.")
     except requests.exceptions.RequestException:
-         print("Error crítico de conexión al calcular la ruta.")
+         print(" [!] Error crítico de red al solicitar la ruta.")

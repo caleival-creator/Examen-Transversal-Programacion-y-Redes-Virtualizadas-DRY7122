@@ -19,3 +19,13 @@ Para usar el script de rutas (`ruta_graphhopper.py`), debe crear un archivo ocul
 El script consume dos endpoints:
 1. Geocoding API (`/geocode`): Para convertir los nombres de las ciudades a coordenadas (latitud y longitud).
 2. Routing API (`/route`): Para calcular la distancia, duración y la narrativa del viaje utilizando las coordenadas obtenidas.
+
+## Configuración API GraphHopper (Ítem 2)
+Para ejecutar el script `ruta_graphhopper.py`, es obligatorio contar con una API Key de GraphHopper.
+1. Cree un archivo llamado `.env` en la raíz del proyecto.
+2. Agregue la siguiente línea: `GRAPHHOPPER_API_KEY=su_clave_real_aqui`
+*(Se incluye el archivo `.env.example` en el repositorio para su referencia).*
+
+El script consume los siguientes endpoints de la API:
+- **Geocoding API**: Utilizada para transformar los nombres de las ciudades ingresadas en coordenadas geográficas (latitud y longitud).
+- **Routing API**: Utilizada para trazar la ruta entre las coordenadas, obteniendo la distancia (km/millas), duración y la narrativa paso a paso.

@@ -46,3 +46,7 @@ El flujo de trabajo automatizado mediante llamadas a la API RESTCONF consistió 
 1. **Borrado (DELETE):** Se eliminó la interfaz Loopback 11 previamente creada.
 2. **Creación (PUT):** Se aprovisionó la interfaz Loopback 22 (IP 22.22.22.22/32) incluyendo el parámetro `"enabled": false` en el Body JSON para garantizar que la interfaz se creara en estado de apagado administrativo.
 3. **Consulta (GET):** Se solicitó un listado completo del árbol de interfaces para verificar las configuraciones aplicadas, validando a través de los códigos de respuesta HTTP (204, 201 y 200 respectivamente).
+
+## Automatización con Ansible (Ítem 6)
+**Explicación de Idempotencia:**
+El playbook creado en esta evaluación es completamente **idempotente**. Esto significa que puede ejecutarse múltiples veces de forma segura sin romper la configuración existente. Si el direccionamiento IPv6, el puerto 9999 de Apache o la instalación del servicio ya están aplicados, Ansible detectará el estado actual y arrojará un estado `ok` (sin cambios) en lugar de un `changed`, garantizando la repetibilidad del código en entornos de producción.

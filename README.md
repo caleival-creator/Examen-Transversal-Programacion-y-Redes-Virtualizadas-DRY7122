@@ -29,3 +29,8 @@ Para ejecutar el script `ruta_graphhopper.py`, es obligatorio contar con una API
 El script consume los siguientes endpoints de la API:
 - **Geocoding API**: Utilizada para transformar los nombres de las ciudades ingresadas en coordenadas geográficas (latitud y longitud).
 - **Routing API**: Utilizada para trazar la ruta entre las coordenadas, obteniendo la distancia (km/millas), duración y la narrativa paso a paso.
+
+## Gestión de Usuarios y Seguridad (Ítem 3/4)
+Para la creación de la base de datos `usuarios.db` y el manejo de credenciales en el script `usuarios_hash.py`, se utilizó la librería nativa `sqlite3`. 
+
+**Algoritmo de Hashing:** Para asegurar que las contraseñas no se almacenen en texto plano, se implementó la librería nativa de Python `hashlib`. Específicamente, se utilizó el algoritmo **SHA-256** (`hashlib.sha256()`). Durante el login, el sistema toma la contraseña ingresada, la vuelve a encriptar en SHA-256 y compara este nuevo hash directamente con el hash almacenado en la base de datos, garantizando así una validación segura de los integrantes.

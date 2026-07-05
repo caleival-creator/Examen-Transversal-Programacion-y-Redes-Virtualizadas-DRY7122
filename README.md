@@ -34,3 +34,9 @@ El script consume los siguientes endpoints de la API:
 Para la creación de la base de datos `usuarios.db` y el manejo de credenciales en el script `usuarios_hash.py`, se utilizó la librería nativa `sqlite3`. 
 
 **Algoritmo de Hashing:** Para asegurar que las contraseñas no se almacenen en texto plano, se implementó la librería nativa de Python `hashlib`. Específicamente, se utilizó el algoritmo **SHA-256** (`hashlib.sha256()`). Durante el login, el sistema toma la contraseña ingresada, la vuelve a encriptar en SHA-256 y compara este nuevo hash directamente con el hash almacenado en la base de datos, garantizando así una validación segura de los integrantes.
+
+## Conexión a router CSR1000v con NETCONF (Ítem 4)
+Para ejecutar el script `netconf_check.py`, se deben cumplir los siguientes prerrequisitos:
+1. **Librerías:** Se requiere la instalación de `ncclient` para manejar la conexión NETCONF sobre SSH.
+2. **Puerto:** El script apunta al puerto estándar NETCONF, que es el **830**.
+3. **Variables Seguras:** Las credenciales nunca se almacenan en texto plano en el script. Se deben declarar en el archivo `.env` utilizando las variables: `ROUTER_IP`, `ROUTER_PORT`, `ROUTER_USER` y `ROUTER_PASS`.

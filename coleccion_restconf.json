@@ -1,0 +1,181 @@
+{
+  "info": {
+    "_postman_id": "270e59c6-3d76-4eb8-ba50-696f5ce85ee1",
+    "name": "Examen DEVASC",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49209497",
+    "_collection_link": "https://go.postman.co/collection/49209497-270e59c6-3d76-4eb8-ba50-696f5ce85ee1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "https://192.168.56.119/restconf/data/ietf-interfaces:interfaces",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "cisco123!",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "cisco",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/yang-data+json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://192.168.56.119/restconf/data/ietf-interfaces:interfaces",
+          "protocol": "https",
+          "host": [
+            "192",
+            "168",
+            "56",
+            "119"
+          ],
+          "path": [
+            "restconf",
+            "data",
+            "ietf-interfaces:interfaces"
+          ]
+        },
+        "description": "Examen DEVASC"
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Loopback 22 (Apagada)",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "cisco123!",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "cisco",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/yang-data+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/yang-data+json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"ietf-interfaces:interface\": {\r\n        \"name\": \"Loopback22\",\r\n        \"description\": \"Creada por Postman\",\r\n        \"type\": \"iana-if-type:softwareLoopback\",\r\n        \"enabled\": false,\r\n        \"ietf-ip:ipv4\": {\r\n            \"address\": [\r\n                {\r\n                    \"ip\": \"22.22.22.22\",\r\n                    \"netmask\": \"255.255.255.255\"\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://192.168.56.119/restconf/data/ietf-interfaces:interfaces/interface=Loopback22",
+          "protocol": "https",
+          "host": [
+            "192",
+            "168",
+            "56",
+            "119"
+          ],
+          "path": [
+            "restconf",
+            "data",
+            "ietf-interfaces:interfaces",
+            "interface=Loopback22"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Borrar la interfaz loopback 11",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "cisco123!",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "cisco",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/yang-data+json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://192.168.56.119/restconf/data/ietf-interfaces:interfaces/interface=Loopback11",
+          "protocol": "https",
+          "host": [
+            "192",
+            "168",
+            "56",
+            "119"
+          ],
+          "path": [
+            "restconf",
+            "data",
+            "ietf-interfaces:interfaces",
+            "interface=Loopback11"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

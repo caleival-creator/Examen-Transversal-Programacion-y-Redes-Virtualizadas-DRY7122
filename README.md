@@ -50,3 +50,8 @@ El flujo de trabajo automatizado mediante llamadas a la API RESTCONF consistió 
 ## Automatización con Ansible (Ítem 6)
 **Explicación de Idempotencia:**
 El playbook creado en esta evaluación es completamente **idempotente**. Esto significa que puede ejecutarse múltiples veces de forma segura sin romper la configuración existente. Si el direccionamiento IPv6, el puerto 9999 de Apache o la instalación del servicio ya están aplicados, Ansible detectará el estado actual y arrojará un estado `ok` (sin cambios) en lugar de un `changed`, garantizando la repetibilidad del código en entornos de producción.
+
+## Configuración con Netmiko (Ítem 7)
+Para la configuración de EIGRP Nombrado mediante el script `config_netmiko.py`, se cumplieron los siguientes requerimientos:
+1. **Dependencias:** Se importó la librería `netmiko` y se utilizó su clase `ConnectHandler` para establecer la conexión SSH programática hacia el router CSR1000v.
+2. **Parámetros de conexión:** Se definió un diccionario de dispositivo que extrae las credenciales de forma segura desde el archivo `.env` (`ROUTER_IP`, `ROUTER_USER`, `ROUTER_PASS` y el puerto 22), cumpliendo con las buenas prácticas de no exponer claves en texto plano.

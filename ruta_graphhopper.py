@@ -29,7 +29,8 @@ def obtener_coordenadas(ciudad):
         if res.status_code == 200:
             data = res.json()
             if data.get("hits"):
-                return data["hits"][0]["lat"], data["hits"][0]["lng"]
+                # AQUI ESTA LA CORRECCION (["point"]["lat"]):
+                return data["hits"][0]["point"]["lat"], data["hits"][0]["point"]["lng"]
             else:
                 # 3. Control de error: Ciudad inválida
                 print(f" [!] Error: La ciudad '{ciudad}' no existe o no pudo ser localizada.")
@@ -45,7 +46,6 @@ while True:
     print("       CALCULADORA DE RUTAS INTERNACIONALES       ")
     print("="*60)
     
-    # Requerimiento: Solicitar en español y salir con 's'
     origen = input("Ingrese 'Ciudad de Origen' (o presione 's' para salir): ")
     if origen.lower() == 's':
         print("Saliendo de la aplicación...")
@@ -56,7 +56,6 @@ while True:
         print("Saliendo de la aplicación...")
         break
 
-    # Requerimiento: Elegir medio de transporte
     print("\nMedios de transporte: car (Auto), bike (Bicicleta), foot (A pie)")
     vehiculo = input("Elija tipo de medio de transporte a utilizar: ").lower()
     if vehiculo not in ['car', 'bike', 'foot']:
@@ -71,7 +70,6 @@ while True:
         print(" [!] Error: No se puede calcular la ruta debido a parámetros inválidos.")
         continue
 
-    # Requerimiento: locale=es asegura la narrativa en español
     url_ruta = f"{ROUTING_API}?point={lat_origen},{lng_origen}&point={lat_destino},{lng_destino}&profile={vehiculo}&locale=es&key={API_KEY}"
     
     try:
@@ -79,7 +77,6 @@ while True:
         if res_ruta.status_code == 200:
             ruta = res_ruta.json()["paths"][0]
             
-            # Cálculos de distancia y tiempo
             dist_km = ruta["distance"] / 1000
             dist_mi = dist_km * 0.621371
             segundos = ruta["time"] / 1000
@@ -88,21 +85,17 @@ while True:
             
             print("\n" + "*"*60)
             print(f" RUTA: {origen.upper()} -> {destino.upper()} ({vehiculo.upper()})")
-            # Requerimiento: Mostrar coordenadas
             print(f" -> Coordenadas Origen : Latitud {lat_origen}, Longitud {lng_origen}")
             print(f" -> Coordenadas Destino: Latitud {lat_destino}, Longitud {lng_destino}")
             print("*"*60)
-            # Requerimiento: Mostrar duración, millas y kilómetros
             print(f"- Distancia de viaje : {dist_km:.2f} Kilómetros / {dist_mi:.2f} Millas")
             print(f"- Duración del viaje : {horas} horas y {minutos} minutos")
             
-            # Requerimiento: Mostrar la narrativa
             print("\n--- NARRATIVA DEL VIAJE ---")
             for paso in ruta["instructions"]:
                 print(f"> {paso['text']} ({paso['distance']/1000:.2f} km)")
             print("*"*60 + "\n")
         else:
-            # 5. Control de error: HTTP Routing / Respuesta vacía
             print(f" [!] Error HTTP {res_ruta.status_code} al trazar la ruta. Es posible que no exista conexión terrestre para el vehículo seleccionado.")
     except requests.exceptions.RequestException:
          print(" [!] Error crítico de red al solicitar la ruta.")

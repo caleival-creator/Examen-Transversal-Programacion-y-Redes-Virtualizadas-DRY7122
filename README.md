@@ -40,3 +40,9 @@ Para ejecutar el script `netconf_check.py`, se deben cumplir los siguientes prer
 1. **Librerías:** Se requiere la instalación de `ncclient` para manejar la conexión NETCONF sobre SSH.
 2. **Puerto:** El script apunta al puerto estándar NETCONF, que es el **830**.
 3. **Variables Seguras:** Las credenciales nunca se almacenan en texto plano en el script. Se deben declarar en el archivo `.env` utilizando las variables: `ROUTER_IP`, `ROUTER_PORT`, `ROUTER_USER` y `ROUTER_PASS`.
+
+## Configuraciones desde Postman con RESTCONF (Ítem 5)
+El flujo de trabajo automatizado mediante llamadas a la API RESTCONF consistió en tres operaciones principales utilizando el formato JSON y el modelo de datos `ietf-interfaces`:
+1. **Borrado (DELETE):** Se eliminó la interfaz Loopback 11 previamente creada.
+2. **Creación (PUT):** Se aprovisionó la interfaz Loopback 22 (IP 22.22.22.22/32) incluyendo el parámetro `"enabled": false` en el Body JSON para garantizar que la interfaz se creara en estado de apagado administrativo.
+3. **Consulta (GET):** Se solicitó un listado completo del árbol de interfaces para verificar las configuraciones aplicadas, validando a través de los códigos de respuesta HTTP (204, 201 y 200 respectivamente).

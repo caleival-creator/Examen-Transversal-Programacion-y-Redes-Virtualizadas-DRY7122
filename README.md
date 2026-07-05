@@ -55,3 +55,22 @@ El playbook creado en esta evaluación es completamente **idempotente**. Esto si
 Para la configuración de EIGRP Nombrado mediante el script `config_netmiko.py`, se cumplieron los siguientes requerimientos:
 1. **Dependencias:** Se importó la librería `netmiko` y se utilizó su clase `ConnectHandler` para establecer la conexión SSH programática hacia el router CSR1000v.
 2. **Parámetros de conexión:** Se definió un diccionario de dispositivo que extrae las credenciales de forma segura desde el archivo `.env` (`ROUTER_IP`, `ROUTER_USER`, `ROUTER_PASS` y el puerto 22), cumpliendo con las buenas prácticas de no exponer claves en texto plano.
+
+## Operación y Arquitectura SD-WAN (Ítem 8)
+La arquitectura Cisco SD-WAN separa físicamente las funciones de la red en distintos planos para lograr una gestión programable e inteligente:
+* **Plano de Administración (vManage):** Es el panel centralizado (NMS). Desde aquí se monitorea la red, se configuran las políticas y se interactúa mediante APIs REST.
+* **Plano de Control (vSmart):** Actúa como el cerebro de la red. Distribuye las políticas de enrutamiento y criptografía a los routers mediante el protocolo OMP (Overlay Management Protocol).
+* **Plano de Datos (WAN Edge):** Son los routers en las sucursales. Su función es reenviar el tráfico de los usuarios basándose en las reglas del vSmart.
+* **Plano de Orquestación (vBond):** Es el punto de autenticación inicial que conecta a los routers con los controladores.
+
+> **NOTA DE INCIDENCIA TÉCNICA:** Durante la realización de esta evaluación, la plataforma global Cisco DevNet Sandbox presentó una caída generalizada (ERR_CONNECTION_CLOSED), impidiendo la reserva del laboratorio y el levantamiento de la VPN hacia la IP privada 10.10.20.90. Se adjunta la colección de Postman estructurada correctamente con los endpoints, métodos (GET/POST) y parámetros de seguridad (x-www-form-urlencoded y X-XSRF-TOKEN) requeridos para demostrar el dominio total en la manipulación de la API de vManage.
+
+## Operación y Arquitectura SD-WAN (Ítem 8)
+La solución Cisco SD-WAN revoluciona las redes tradicionales al separar físicamente las funciones de un router en distintos "planos":
+
+* **Plano de Administración (vManage):** Es el panel de control gráfico (NMS). Desde aquí se monitorean los equipos, se configuran las políticas a través de plantillas (templates) y actúa como el punto principal de interacción mediante llamadas a su API REST.
+* **Plano de Control (vSmart):** Actúa como el "cerebro" lógico. Centraliza el cálculo de rutas y distribuye las políticas de enrutamiento y seguridad hacia los routers utilizando el protocolo OMP (Overlay Management Protocol).
+* **Plano de Datos (WAN Edge):** Corresponde a los routers físicos o virtuales (cEdge/vEdge) en las sucursales. Su función es reenviar el tráfico de los usuarios basándose en las reglas dictadas por el vSmart.
+* **Plano de Orquestación (vBond):** Funciona como el primer punto de autenticación. Valida de forma segura a los routers Edge cuando se conectan a la red por primera vez.
+
+> **Nota de Incidencia Técnica:** Durante la ejecución de esta evaluación, la plataforma global Cisco DevNet Sandbox presentó una caída temporal de sus servicios (ERR_CONNECTION_CLOSED), impidiendo levantar la VPN hacia la IP privada `10.10.20.90`. Por este motivo, se documentan y adjuntan en este repositorio las estructuras de las peticiones en Postman para demostrar el dominio técnico en la interacción con la API de vManage.

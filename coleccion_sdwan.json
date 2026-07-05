@@ -1,0 +1,143 @@
+{
+  "info": {
+    "_postman_id": "dff72bcb-9464-4764-8a9f-3e7213c93d03",
+    "name": "SD-WAN Sandbox",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49209497",
+    "_collection_link": "https://go.postman.co/collection/49209497-dff72bcb-9464-4764-8a9f-3e7213c93d03?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Petición de Autenticación",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "j_username",
+              "value": "admin",
+              "type": "text",
+              "uuid": "015a88bb-60ae-4559-a478-20a68782665a"
+            },
+            {
+              "key": "j_password",
+              "value": "admin",
+              "type": "text",
+              "uuid": "4d6b186e-1fa3-4579-a89d-2f1b9c15fab0"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://10.10.20.90:443/j_security_check",
+          "protocol": "https",
+          "host": [
+            "10",
+            "10",
+            "20",
+            "90"
+          ],
+          "port": "443",
+          "path": [
+            "j_security_check"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Petición de Token",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://10.10.20.90:443/dataservice/client/token",
+          "protocol": "https",
+          "host": [
+            "10",
+            "10",
+            "20",
+            "90"
+          ],
+          "port": "443",
+          "path": [
+            "dataservice",
+            "client",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Estado de Equipos (Monitor)",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-XSRF-TOKEN",
+            "value": "token_generado_aqui",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://10.10.20.90:443/dataservice/device/monitor",
+          "protocol": "https",
+          "host": [
+            "10",
+            "10",
+            "20",
+            "90"
+          ],
+          "port": "443",
+          "path": [
+            "dataservice",
+            "device",
+            "monitor"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Estadísticas de Interfaces",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-XSRF-TOKEN",
+            "value": "token_generado_aqui",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://10.10.20.90:443/dataservice/statistics/interface",
+          "protocol": "https",
+          "host": [
+            "10",
+            "10",
+            "20",
+            "90"
+          ],
+          "port": "443",
+          "path": [
+            "dataservice",
+            "statistics",
+            "interface"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
